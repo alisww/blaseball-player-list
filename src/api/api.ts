@@ -10,6 +10,8 @@ import {
 import attributes from './attributes.json';
 import queryString from "query-string";
 
+const chronicler_base_url: string = process.env.REACT_APP_CHRONICLER_BASE_URL || "https://api.sibr.dev/chronicler";
+
 export interface LeagueData {
     players: Record<string, Player>;
     teams: Record<string, BlaseballTeam>;
@@ -67,7 +69,7 @@ async function fetchEntities<T>(
     do {
         pages.push(await fetchJson<ChroniclerEntities<T>>(
             queryString.stringifyUrl({
-                url: "https://api.sibr.dev/chronicler/v2/entities",
+                url: chronicler_base_url + "/v2/entities",
                 query: {
                     type: type,
                     at: at ?? undefined,
