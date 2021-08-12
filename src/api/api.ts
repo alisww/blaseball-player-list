@@ -7,6 +7,7 @@ import {
     ChroniclerEntity,
     PlayerMod,
 } from "./types";
+import attributes from './attributes.json';
 import queryString from "query-string";
 
 export interface LeagueData {
@@ -47,9 +48,7 @@ async function fetchPlayersAndMods(
 ): Promise<[ChroniclerEntity<BlaseballPlayer>[], PlayerMod[]]> {
     const players = await fetchEntities<BlaseballPlayer>("player", at);
     const modIds = getAllModIds(players);
-    const mods = await fetchJson<PlayerMod[]>(
-        "https://api.sibr.dev/proxy/database/mods?ids=" + modIds.join(",")
-    );
+    const mods: PlayerMod[] = attributes.filter(a => modIds.indexOf(a.id) !== -1);
     return [players, mods];
 }
 
@@ -63,6 +62,8 @@ async function fetchEntities<T>(
     type: string, at: string | null
 ) : Promise<ChroniclerEntity<T>[]> {
     const pages: ChroniclerEntities<T>[] = [];
+    const offset: number = parseInt(document!.cookie!.split('; ').find(row => row.startsWith('offset_sec'))!.split('=')[1])!;
+    at = new Date((new Date().getTime() - offset * 1000)).toISOString();
     do {
         pages.push(await fetchJson<ChroniclerEntities<T>>(
             queryString.stringifyUrl({

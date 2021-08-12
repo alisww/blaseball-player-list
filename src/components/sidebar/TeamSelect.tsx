@@ -21,12 +21,12 @@ export function TeamSelect(props: {
     const data = useLeagueData();
     if (!data) return null;
 
-    const normalTeams = sortTeams(ilbTeamIds.map((id) => data.teams[id]));
-    const coffeeTeams = sortTeams(coffeeTeamIds.map((id) => data.teams[id]));
-    const specialTeams = specialTeamIds.map((id) => data.teams[id]);
+    const normalTeams = sortTeams(ilbTeamIds.map((id) => data.teams[id]).filter(a => a !== undefined));
+    const coffeeTeams = sortTeams(coffeeTeamIds.map((id) => data.teams[id]).filter(a => a !== undefined));
+    const specialTeams = specialTeamIds.map((id) => data.teams[id]).filter(a => a !== undefined);
     const libraryTeams = sortTeams(
         libraryTeamIds.map((id) => data.teams[id]).filter((t) => !!t)
-    );
+    ).filter(a => a !== undefined);
     const unknownTeams = sortTeams(
         Object.keys(data.teams)
             .filter((t) => getTeamType(t) === null)
