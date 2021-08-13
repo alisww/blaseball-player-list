@@ -8,7 +8,7 @@ import SingleTeamPage from "./pages/SingleTeamPage";
 
 function App(): JSX.Element {
     return (
-        <BrowserRouter>
+        <BrowserRouter basename="/_before/players">
             <div className="container-fluid">
                 <div className="row">
                     <div className="col-md-3 col-lg-2 sidebar">
